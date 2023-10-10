@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 def select_source_file():
-    file_path = filedialog.askopenfilename(title="Select Source File", filetypes=(("Excel files", "*.xlsx"), ("All files", "*.*")))
+    file_path = filedialog.askopenfilename(title="Select Source File", filetypes=(("Excel files", "*.xlsx;*.xls"), ("All files", "*.*")))
     entry_source.delete(0, tk.END)
     entry_source.insert(0, file_path)
 
@@ -17,9 +17,18 @@ def process_data():
     file_name_original = entry_source.get()
     file_name_output = entry_output.get()
 
+    # Determine the engine based on file extension
+    if file_name_original.lower().endswith('.xls'):
+        engine_to_use = 'xlrd'
+    elif file_name_original.lower().endswith('.xlsx'):
+        engine_to_use = 'openpyxl'
+    else:
+        messagebox.showerror("Error", "Unsupported file format.")
+        return
+
     try:
         # 1. Load the data from Excel
-        data = pd.read_excel(file_name_original)
+        data = pd.read_excel(file_name_original, engine=engine_to_use)
 
         # 2. Extract relevant columns using 0-based column index
         subset_data = data.iloc[:, [7, 11, 6]]
@@ -38,6 +47,7 @@ def process_data():
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
+
 
 # Create main tkinter window
 root = tk.Tk()
