@@ -1,6 +1,8 @@
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import subprocess
+import os
 
 def select_source_file():
     file_path = filedialog.askopenfilename(title="Select Source File", filetypes=(("Excel files", "*.xlsx;*.xls"), ("All files", "*.*")))
@@ -44,6 +46,10 @@ def process_data():
 
         # Display success message
         messagebox.showinfo("Success", "Data processed and saved successfully!")
+
+        # Open the saved file using the default application
+        if os.path.exists(file_name_output):
+            subprocess.Popen(["start", "excel", file_name_output], shell=True)
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
