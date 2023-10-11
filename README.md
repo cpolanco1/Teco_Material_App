@@ -19,6 +19,7 @@ TECO Material Creator is a desktop tool designed to simplify the process of hand
 - Pandas
 - Tkinter (bundled with standard Python installations)
 - Openpyxl
+- Xlrd (to open Excel 97-2003)
 
 ### Installation
 
